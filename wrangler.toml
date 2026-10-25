@@ -1,0 +1,27 @@
+name = "linksy"
+main = "worker.js"
+compatibility_date = "2025-01-01"
+
+[[durable_objects.bindings]]
+name = "INBOX"
+class_name = "Inbox"
+
+[[durable_objects.bindings]]
+name = "CONV"
+class_name = "Conv"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Inbox"]
+
+[[migrations]]
+tag = "v2"
+new_sqlite_classes = ["Conv"]
+
+[vars]
+PRIV_REPO = "uporabnik/linksy-zasebno"   # ZASEBEN repozitorij (tu so vsi podatki)
+BRANCH = "main"
+ORIGIN = "https://uporabnik.github.io"   # naslov vaše strani (brez poti na koncu)
+# neobvezno za klice prek omrežij, ki zahtevajo TURN (brezplačnih prvih 1000 GB/mesec):
+# TURN_KEY_ID = "..."
+# Skrivnosti dodajte z ukazom:  npx wrangler secret put GH_TOKEN   (in  TURN_API_TOKEN)
