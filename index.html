@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Linksy – povezani na pravi način</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;800&display=swap">
+<style>
+:root{--bg:#f2f3fa;--card:#fff;--ink:#14162b;--mut:#666b88;--line:#e3e5f2;--acc:#6a4cff;--acc2:#12c2a5;--hov:#eceefa;--danger:#e5484d;color-scheme:light}
+:root[data-theme="dark"]{--bg:#0d0f1f;--card:#171a31;--ink:#eef0ff;--mut:#9aa0c4;--line:#292d4d;--acc:#8b74ff;--hov:#20244a;color-scheme:dark}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d0f1f;--card:#171a31;--ink:#eef0ff;--mut:#9aa0c4;--line:#292d4d;--acc:#8b74ff;--hov:#20244a;color-scheme:dark}}
+*,*::before,*::after{box-sizing:border-box}
+html{height:100%}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:400 15px/1.5 "Plus Jakarta Sans",system-ui,sans-serif;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+button{font:inherit;color:inherit;cursor:pointer}
+input,textarea,select{font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:12px;padding:9px 12px;width:100%}
+:focus-visible{outline:3px solid var(--acc2);outline-offset:2px}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--card);border-bottom:1px solid var(--line);display:grid;grid-template-columns:minmax(150px,1fr) auto minmax(150px,1fr);align-items:center;gap:12px;padding:8px 16px;height:60px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:31}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:22px;letter-spacing:-.03em}
+.logo b{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--acc),var(--acc2));display:grid;place-items:center;color:#fff;font-size:20px}
+.sbox{position:relative;max-width:260px}
+.sbox input{border-radius:99px;padding-left:14px;margin-left:6px;width:calc(100% - 6px)}
+.tabs{display:flex;gap:4px}
+.tab{background:none;border:0;border-radius:12px;padding:8px 18px;font-size:20px;color:var(--mut);position:relative}
+.tab:hover{background:var(--hov)}
+.tab[aria-selected="true"]{color:var(--acc)}
+.tab[aria-selected="true"]::after{content:"";position:absolute;left:14px;right:14px;bottom:-9px;height:3px;border-radius:3px;background:var(--acc)}
+.acts{display:flex;justify-content:flex-end;gap:8px;align-items:center}
+.ib{width:40px;height:40px;border-radius:50%;border:0;background:var(--hov);position:relative;font-size:18px}
+.bd{position:absolute;top:-2px;right:-2px;background:var(--danger);color:#fff;border-radius:99px;font-size:11px;padding:0 5px;font-weight:600}
+.lay{display:grid;grid-template-columns:260px minmax(0,640px) 280px;gap:20px;justify-content:center;padding:18px 16px 90px}
+.side{position:sticky;top:78px;align-self:start;display:grid;gap:4px;max-height:calc(100dvh - 90px);overflow:auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:16px}
+.card h3{margin:0 0 10px;font-size:17px;letter-spacing:-.01em}
+.av{border-radius:50%;display:inline-grid;place-items:center;color:#fff;font-weight:800;flex:none;overflow:hidden}
+.row{display:flex;align-items:center;gap:10px}
+.lnk{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;background:none;border:0;width:100%;text-align:left;font-weight:600}
+.lnk:hover{background:var(--hov)}
+.on{position:relative}
+.on::after{content:"";position:absolute;right:-1px;bottom:-1px;width:11px;height:11px;border-radius:50%;background:#2fd17b;border:2px solid var(--card)}
+.btn{border:0;border-radius:99px;padding:9px 18px;font-weight:600;background:var(--acc);color:#fff}
+.btn.g{background:var(--hov);color:var(--ink)}
+.btn.s{padding:6px 14px;font-size:13.5px}
+.mut{color:var(--mut);font-size:13px}
+.stories{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px}
+.story{flex:none;width:112px;height:180px;border-radius:16px;border:0;color:#fff;position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:10px;text-align:left;font-weight:600;font-size:13px;overflow:hidden}
+.story .av{position:absolute;top:10px;left:10px;border:3px solid var(--acc2)}
+.story.add{background:var(--card);color:var(--ink);border:1px solid var(--line);align-items:center;justify-content:center;gap:6px}
+.story.add i{font-style:normal;width:40px;height:40px;border-radius:50%;background:var(--acc);color:#fff;display:grid;place-items:center;font-size:24px}
+.comp{display:flex;gap:10px;align-items:center}
+.comp button.fake{flex:1;text-align:left;background:var(--bg);border:0;border-radius:99px;padding:12px 16px;color:var(--mut)}
+.post .h{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.post .h b{display:block;line-height:1.2}
+.post p{margin:0 0 10px;white-space:pre-wrap;overflow-wrap:anywhere}
+.post img.pi{width:100%;border-radius:14px;max-height:520px;object-fit:cover;margin-bottom:10px}
+.cnt{display:flex;justify-content:space-between;color:var(--mut);font-size:13px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.pa{display:flex;gap:4px;padding-top:6px;position:relative}
+.pa>div{flex:1;position:relative}
+.pa button{width:100%;border:0;background:none;border-radius:10px;padding:8px;font-weight:600;color:var(--mut)}
+.pa button:hover{background:var(--hov)}
+.pa button.me{color:var(--acc)}
+.rx{position:absolute;bottom:100%;left:0;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:4px 8px;display:none;gap:2px;box-shadow:0 10px 30px -10px rgba(0,0,0,.4);z-index:5}
+.pa>div:hover .rx,.pa>div:focus-within .rx{display:flex}
+.rx button{width:auto;font-size:24px;padding:2px 5px;transition:transform .12s}
+.rx button:hover{transform:scale(1.3) translateY(-4px)}
+.cm{display:flex;gap:8px;margin-top:10px}
+.cm .b{background:var(--bg);border-radius:14px;padding:6px 12px;overflow-wrap:anywhere}
+.cm .b b{font-size:13px;display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+.g .card{margin:0}
+.cover{height:200px;border-radius:18px 18px 0 0;background:linear-gradient(120deg,var(--acc),var(--acc2));margin:-16px -16px 0}
+.pf{display:flex;gap:16px;align-items:end;margin-top:-50px;padding-bottom:6px;flex-wrap:wrap}
+.pf .av{border:5px solid var(--card)}
+.itm .im{aspect-ratio:1;border-radius:14px;display:grid;place-items:center;font-size:48px;background:var(--hov);margin-bottom:8px;overflow:hidden}
+.itm .im img{width:100%;height:100%;object-fit:cover}
+.pill{background:var(--hov);border-radius:99px;padding:2px 10px;font-size:12px;font-weight:600}
+dialog{border:0;border-radius:22px;padding:0;background:var(--card);color:var(--ink);width:min(520px,calc(100vw - 20px));max-height:calc(100dvh - 20px);box-shadow:0 40px 80px -20px rgba(0,0,0,.55)}
+dialog::backdrop{background:rgba(10,8,30,.65);backdrop-filter:blur(3px)}
+.dg{padding:22px;display:grid;gap:12px;position:relative}
+.dg h2{margin:0;font-size:22px;text-align:center}
+.x{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:0;background:var(--hov)}
+.dock{position:fixed;right:16px;bottom:calc(0px + env(safe-area-inset-bottom,0px));display:flex;gap:12px;align-items:flex-end;z-index:25}
+.cw{width:320px;height:420px;background:var(--card);border:1px solid var(--line);border-radius:18px 18px 0 0;display:flex;flex-direction:column;box-shadow:0 10px 40px -10px rgba(0,0,0,.4)}
+.cw header{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.cw header b{flex:1;font-size:14px}
+.cw header button{border:0;background:var(--hov);width:32px;height:32px;border-radius:50%}
+.ms{flex:1;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:6px}
+.bb{max-width:80%;padding:7px 12px;border-radius:16px;background:var(--hov);overflow-wrap:anywhere}
+.bb.me{align-self:flex-end;background:var(--acc);color:#fff}
+.cw form{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}
+#callD{width:min(920px,calc(100vw - 16px));background:#0b0c18;color:#fff}
+.vw{position:relative;aspect-ratio:16/10;background:#000;border-radius:22px 22px 0 0;overflow:hidden}
+#rv{width:100%;height:100%;object-fit:cover}
+#lv{position:absolute;right:14px;bottom:14px;width:26%;max-width:220px;border-radius:14px;border:2px solid rgba(255,255,255,.7);background:#222;transform:scaleX(-1);object-fit:cover}
+#rw{position:absolute;inset:0;display:grid;place-items:center;text-align:center;gap:8px;align-content:center}
+.cc{display:flex;justify-content:center;gap:14px;padding:16px}
+.cc button{width:54px;height:54px;border-radius:50%;border:0;background:#2a2d48;color:#fff;font-size:22px}
+.cc button.off{background:#fff;color:#111}
+.cc button.end{background:var(--danger)}
+#inc{position:fixed;top:calc(70px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 18px;z-index:60;box-shadow:0 20px 50px -10px rgba(0,0,0,.5);display:flex;gap:12px;align-items:center}
+#inc[hidden]{display:none}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:#241a55;color:#fff;padding:12px 20px;border-radius:99px;opacity:0;pointer-events:none;transition:.25s;z-index:80;max-width:90vw}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media(max-width:1100px){.lay{grid-template-columns:minmax(0,640px) 280px}#left{display:none}}
+@media(max-width:820px){.lay{grid-template-columns:minmax(0,1fr)}#right{display:none}.top{grid-template-columns:auto 1fr auto;height:auto;flex-wrap:wrap}.sbox{display:none}.tabs{grid-column:1/-1;order:3;justify-content:space-between;overflow-x:auto}.tab{padding:8px 12px}.cw{width:calc(100vw - 20px)}.dock{right:10px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+body{background:radial-gradient(900px 500px at 8% -5%,rgba(106,76,255,.16),transparent 60%),radial-gradient(800px 500px at 100% 0,rgba(18,194,165,.14),transparent 55%),var(--bg);background-attachment:fixed}
+.top{background:color-mix(in srgb,var(--card) 78%,transparent);backdrop-filter:blur(16px) saturate(1.4);border-bottom:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
+body::before{background:color-mix(in srgb,var(--card) 78%,transparent);backdrop-filter:blur(16px)}
+.logo b{box-shadow:0 8px 20px -6px var(--acc)}
+.logo span{background:linear-gradient(90deg,var(--acc),var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.card{border:1px solid color-mix(in srgb,var(--line) 60%,transparent);border-radius:24px;box-shadow:0 1px 2px rgba(20,22,43,.04),0 14px 34px -18px rgba(60,50,140,.28);transition:box-shadow .2s,transform .2s}
+.post:hover{box-shadow:0 1px 2px rgba(20,22,43,.05),0 22px 44px -18px rgba(60,50,140,.38)}
+.tab{border-radius:14px;transition:background .15s,color .15s}
+.tab[aria-selected="true"]{background:color-mix(in srgb,var(--acc) 14%,transparent)}
+.tab[aria-selected="true"]::after{display:none}
+.btn{background:linear-gradient(135deg,var(--acc),color-mix(in srgb,var(--acc) 60%,var(--acc2)));box-shadow:0 8px 18px -8px var(--acc);transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn.g{background:var(--hov);box-shadow:none}
+.ib{transition:background .15s,transform .15s}.ib:hover{transform:scale(1.07)}
+.story{border-radius:20px;transition:transform .18s;box-shadow:0 14px 26px -16px rgba(40,30,100,.6)}
+.story:hover{transform:translateY(-3px)}
+.story::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.45),transparent 55%);pointer-events:none}
+.story>*{position:relative;z-index:1}.story .av{position:absolute}
+.story.add::after{display:none}
+.post img.pi{transition:transform .35s;border-radius:18px}
+.post button:hover img.pi{transform:scale(1.015)}
+.av{box-shadow:0 0 0 2px var(--card),0 0 0 4px color-mix(in srgb,var(--acc) 35%,transparent)}
+.comp .av,.cw .av,.cm .av,.lnk .av{box-shadow:none}
+.lnk{border-radius:14px;transition:background .15s}
+.cw{border-radius:22px 22px 0 0;box-shadow:0 20px 50px -16px rgba(30,20,90,.55)}
+.cw header{background:linear-gradient(120deg,color-mix(in srgb,var(--acc) 14%,transparent),color-mix(in srgb,var(--acc2) 12%,transparent))}
+.bb.me{background:linear-gradient(135deg,var(--acc),color-mix(in srgb,var(--acc) 60%,var(--acc2)))}
+dialog{border-radius:26px}
+.cover{height:230px;border-radius:24px 24px 0 0}
+.ph{border:0;padding:0;border-radius:14px;overflow:hidden;aspect-ratio:1;background:var(--hov);display:block;transition:transform .2s}
+.ph:hover{transform:scale(1.04)}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.dg label{display:grid;gap:4px;font-weight:600;font-size:14px}
+#iv{display:inline-block;border-radius:10px}
+.bb{position:relative}.dm{border:0;background:none;opacity:0;margin-left:6px;font-size:12px;cursor:pointer;color:inherit;padding:0}.bb:hover .dm,.dm:focus-visible{opacity:.9}
+@media(hover:none){.dm{opacity:.7}}
+</style>
+</head>
+<body>
+<header class="top">
+<div class="row"><div class="logo"><b>L</b><span>Linksy</span></div><div class="sbox"><input id="q" type="search" placeholder="Išči po Linksyju" aria-label="Iskanje"></div></div>
+<nav class="tabs" role="tablist" id="tabs"></nav>
+<div class="acts"><button class="ib" id="th" aria-label="Svetla/temna tema">◐</button><button class="ib" id="nb" aria-label="Obvestila">🔔<span class="bd" id="nc"></span></button><button class="ib" id="meb" aria-label="Moj profil" style="padding:0;background:none"></button></div>
+</header>
+<div class="lay"><aside class="side" id="left"></aside><main id="main"></main><aside class="side" id="right"></aside></div>
+<div class="dock" id="dock"></div>
+
+<dialog id="dC"><div class="dg"><button class="x" data-x aria-label="Zapri">✕</button><h2>Ustvari objavo</h2>
+<div class="row" id="cme"></div><textarea id="ct" rows="4" maxlength="1000" placeholder="O čem razmišljaš?" aria-label="Besedilo objave"></textarea>
+<img id="cp" alt="" style="display:none;width:100%;border-radius:12px;max-height:240px;object-fit:cover">
+<label class="btn g" style="text-align:center">📷 Dodaj fotografijo<input id="cf" type="file" accept="image/*" hidden></label>
+<button class="btn" id="cpost">Objavi</button></div></dialog>
+<dialog id="dN"><div class="dg"><button class="x" data-x aria-label="Zapri">✕</button><h2>Obvestila</h2><div id="nl"></div></div></dialog>
+<dialog id="dS"><div class="dg"><button class="x" data-x aria-label="Zapri">✕</button><h2>Zgodba</h2><div id="sv"></div></div></dialog>
+<dialog id="dQ"><div class="dg"><button class="x" data-x aria-label="Zapri">✕</button><h2>Rezultati iskanja</h2><div id="ql"></div></div></dialog>
+<dialog id="dF"><div class="dg"><button class="x" data-x aria-label="Zapri">✕</button><h2 id="fh"></h2><div id="ff" class="dg" style="padding:0"></div></div></dialog>
+<dialog id="callD"><div class="vw"><video id="rv" autoplay playsinline></video><div id="rw"><span id="ra"></span><b id="rn"></b><span class="mut" id="rs">Povezovanje …</span></div><video id="lv" autoplay muted playsinline></video></div>
+<div class="cc"><button id="bm" aria-label="Mikrofon">🎤</button><button id="bc" aria-label="Kamera">📹</button><button class="end" id="be" aria-label="Končaj klic">✆</button></div></dialog>
+<input type="file" id="fAv" accept="image/*" hidden><input type="file" id="fCv" accept="image/*" hidden><input type="file" id="fGal" accept="image/*" multiple hidden>
+<dialog id="dI" style="width:min(96vw,1500px)"><div class="dg"><button class="x" data-x aria-label="Zapri">✕</button><div style="overflow:auto;max-height:calc(100dvh - 150px);margin-top:34px;text-align:center"><img id="iv" alt="Fotografija" style="max-width:100%;max-height:calc(100dvh - 160px);cursor:zoom-in"></div><div class="mut" id="ivc" style="text-align:center"></div><button class="btn g" id="idel" style="color:var(--danger)">🗑 Izbriši fotografijo</button></div></dialog>
+<dialog id="dA"><div class="dg"><h2 id="ah">Prijava v Linksy</h2>
+<div class="row" style="gap:6px;justify-content:center"><button class="btn s" id="atl">Prijava</button><button class="btn g s" id="atr">Nov račun</button></div>
+<label>Uporabniško ime<input id="aun" autocomplete="username" maxlength="20"></label>
+<label>Geslo<input id="apw" type="password" autocomplete="current-password" maxlength="100"></label>
+<label id="apl" hidden>Ponovite geslo<input id="apw2" type="password" autocomplete="new-password" maxlength="100"></label>
+<div id="aer" role="alert" style="color:var(--danger);min-height:1.3em;font-size:14px"></div>
+<button class="btn" id="ago">Prijava</button>
+<p class="mut" style="margin:0">E-pošte ne potrebujete. Geslo si zapomnite: strežnik ga hrani samo v zakriti obliki, zato ga ni mogoče obnoviti.</p></div></dialog>
+<div id="inc" hidden role="alert"><span id="incn"></span><button class="btn s" id="ia">Sprejmi</button><button class="btn g s" id="id">Zavrni</button></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const API="";/* ← sem prilepite naslov Cloudflare Workerja, npr. https://linksy.vase-ime.workers.dev */
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=x=>String(x==null?"":x).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const toast=m=>{const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("on"),3000)};
+const ago=t=>{const m=Math.floor((Date.now()-t)/6e4);return m<1?"zdaj":m<60?m+" min":m<1440?Math.floor(m/60)+" h":Math.floor(m/1440)+" d"};
+const RX={like:"👍",love:"❤️",haha:"😂",wow:"😮",sad:"😢",angry:"😡"},RN={like:"Všeč mi je",love:"Obožujem",haha:"Haha",wow:"Vau",sad:"Žalostno",angry:"Jezen"};
+const m=60000,now=Date.now();
+function seed(){return{me:{id:"me",n:"Vi",bio:"",img:"",cover:"",gallery:[]},people:[],friends:[],req:[],sug:[],groups:[],items:[],events:[],posts:[],stories:[],notifs:[],chat:{},clean:1}}
+let S;try{S=JSON.parse(localStorage.getItem("linksy")||"null")}catch(e){}if(!S||!S.people)S=seed();
+let tab="home",pv="me";const save=()=>{try{localStorage.setItem("linksy",JSON.stringify(S))}catch(e){toast("Shranjevanje ni uspelo (premalo prostora). Uporabite manjše slike.")}};
+const sv=(a,b,k)=>"data:image/svg+xml;utf8,"+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500"><defs><linearGradient id="g" x2="0" y2="1"><stop offset="0" stop-color="hsl(${a},70%,58%)"/><stop offset="1" stop-color="hsl(${b},75%,78%)"/></linearGradient></defs><rect width="800" height="500" fill="url(#g)"/><circle cx="${520+k*70}" cy="${110+k*15}" r="46" fill="#fff" opacity=".85"/><path d="M0 500V${300+k*12}l140-120 120 100 150-170 170 190 100-80 120 80V500z" fill="hsl(${a},38%,32%)" opacity=".8"/><path d="M0 500V400l200-90 180 80 200-110 220 120V500z" fill="hsl(${b},45%,22%)"/></svg>`);
+if(!S.clean){S.people=[];S.friends=[];S.req=[];S.sug=[];S.out=[];S.stories=[];S.groups=[];S.items=[];S.events=[];S.notifs=[];S.chat={};S.posts=(S.posts||[]).filter(p=>p.a==="me");if(S.me&&S.me.bio==="Dobrodošli na mojem profilu.")S.me.bio="";S.clean=1;save()}
+if(!S.nobot){Object.keys(S.chat||{}).forEach(k=>{S.chat[k]=S.chat[k].filter(m=>m.f)});S.nobot=1;save()}
+const P=id=>id==="me"?S.me:S.people.find(p=>p.id===id)||{id,n:"Neznan",h:200};
+const av=(p,s=40)=>`<span class="av" style="width:${s}px;height:${s}px;font-size:${s*.42}px;background:${U(p.img)?`center/cover url('${esc(U(p.img))}')`:`linear-gradient(150deg,hsl(${p.h||250} 65% 52%),hsl(${((p.h||250)+50)%360} 70% 40%))`}">${U(p.img)?"":esc((p.n||"?")[0])}</span>`;
+const IMG={};
+const U=u=>!u?"":u.startsWith("idb:")?(IMG[u]||""):(/^data:image\//.test(u)||(API&&u.startsWith(API+"/img/")))?u:"";
+const ok=U;
+function shrink(f,max=900){return new Promise((res,rej)=>{const r=new FileReader();r.onerror=()=>rej(new Error("Datoteke ni mogoče prebrati"));r.onload=()=>{const i=new Image();i.onerror=()=>rej(new Error("To ni veljavna slika"));i.onload=()=>{const k=Math.min(1,max/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);c.getContext("2d").drawImage(i,0,0,c.width,c.height);res(c.toDataURL("image/jpeg",.72))};i.src=r.result};r.readAsDataURL(f)})}
+
+const TABS=[["home","🏠","Domov"],["friends","👥","Prijatelji"],["groups","🫂","Skupine"],["market","🛍️","Tržnica"],["events","📅","Dogodki"],["profile","👤","Profil"]];
+$("#tabs").innerHTML=TABS.map(t=>`<button class="tab" role="tab" data-tab="${t[0]}" aria-label="${t[2]}" title="${t[2]}">${t[1]}</button>`).join("");
+function chrome(){$$(".tab").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===tab));$("#meb").innerHTML=av(S.me,40);
+ const n=S.notifs.filter(x=>!x.r).length+S.req.length;$("#nc").textContent=n||"";$("#nc").hidden=!n;
+ $("#left").innerHTML=`<button class="lnk" data-tab="profile">${av(S.me,36)}<span>${esc(S.me.n)}</span></button>`+TABS.slice(0,5).map(t=>`<button class="lnk" data-tab="${t[0]}"><span style="font-size:22px;width:36px;text-align:center">${t[1]}</span>${t[2]}</button>`).join("")+`<p class="mut" style="padding:10px">Linksy © 2026 · Zasebnost · Pogoji</p>`;
+ $("#right").innerHTML=(S.req.length?`<div class="card"><h3>Zahteve za prijateljstvo</h3>${S.req.map(id=>`<div class="row" style="margin-bottom:8px">${av(P(id),40)}<b style="flex:1">${esc(P(id).n)}</b><button class="btn s" data-acc="${id}">Potrdi</button></div>`).join("")}</div>`:"")
+ +`<div class="card"><h3>Kontakti</h3>${S.friends.map((id,i)=>`<button class="lnk" data-chat="${id}"><span>${av(P(id),36)}</span><span style="flex:1">${esc(P(id).n)}</span>${UN[id]?`<span class="bd" style="position:static">${UN[id]}</span>`:""}</button>`).join("")||'<p class="mut">Še nimate prijateljev.</p>'}</div>`}
+function postH(p){const A=P(p.a),mine=p.r.me,cnt=Object.keys(p.r).length,top=[...new Set(Object.values(p.r))].slice(0,3).map(k=>RX[k]).join("");
+ return`<article class="card post" data-p="${p.id}"><div class="h"><button data-user="${A.id}" style="border:0;background:none;padding:0" aria-label="Profil: ${esc(A.n)}">${av(A,44)}</button><div><b><button data-user="${A.id}" style="border:0;background:none;padding:0;font-weight:800">${esc(A.n)}</button></b><span class="mut">${ago(p.t)}</span></div>${p.a==="me"?`<button class="btn g s" style="margin-left:auto" data-delp="${p.id}" aria-label="Izbriši objavo">🗑</button>`:""}</div>
+ <p>${esc(p.x)}</p>${p.img?`<button data-view="${esc(p.img)}" aria-label="Odpri sliko" style="border:0;padding:0;background:none;width:100%;display:block;cursor:zoom-in"><img class="pi" src="${esc(ok(p.img))}" alt="Slika objave"></button>`:""}
+ <div class="cnt"><span>${cnt?top+" "+cnt:""}</span><span>${p.cm.length?p.cm.length+" komentarjev":""}${p.sh?" · "+p.sh+" delitev":""}</span></div>
+ <div class="pa"><div><button class="${mine?"me":""}" data-rx="${p.id}|like">${mine?RX[mine]+" "+RN[mine]:"👍 Všeč mi je"}</button><div class="rx">${Object.keys(RX).map(k=>`<button data-rx="${p.id}|${k}" aria-label="${RN[k]}">${RX[k]}</button>`).join("")}</div></div>
+ <div><button data-cmf="${p.id}">💬 Komentiraj</button></div><div><button data-sh="${p.id}">↗ Deli</button></div></div>
+ ${p.cm.map(c=>`<div class="cm">${av(P(c.u),32)}<div><div class="b"><b>${esc(P(c.u).n)}</b>${esc(c.x)}</div><span class="mut">${ago(c.t)}</span></div></div>`).join("")}
+ <form class="cm" data-cf="${p.id}">${av(S.me,32)}<input placeholder="Napiši komentar …" aria-label="Komentar" maxlength="300"></form></article>`}
+const V={
+home(){return`<div class="stories"><button class="story add" data-newstory><i>+</i>Ustvari zgodbo</button>${S.stories.map((s,i)=>`<button class="story" data-story="${i}" style="background:linear-gradient(160deg,hsl(${P(s.u).h} 60% 45%),hsl(${(P(s.u).h+70)%360} 60% 30%))">${av(P(s.u),36)}${esc(P(s.u).n.split(" ")[0])}</button>`).join("")}</div>
+ <div class="card"><div class="comp">${av(S.me,44)}<button class="fake" data-compose>Kaj je novega, ${esc(S.me.n)}?</button></div></div>${S.posts.slice().sort((a,b)=>b.t-a.t).map(postH).join("")||'<div class="card mut">Tu je zaenkrat prazno. Objavite kaj ali povabite prijatelja (zavihek Prijatelji). Videli boste samo objave oseb, s katerimi ste povezani.</div>'}`},
+friends(){return`${API?`<div class="card"><h3>Dodaj prijatelja</h3><p class="mut" style="margin-top:0">Linksy je zaseben: nihče ne vidi drugih, dokler se ne povežete. Prijatelja dodate samo s povabilom, ki ga pošljete sami (po e-pošti ali kako drugače).</p>
+ <button class="btn" data-inv>＋ Ustvari povabilo</button>${S.invs&&S.invs.length?`<div style="margin-top:14px">${S.invs.map(i=>`<div class="row" style="margin-bottom:8px;flex-wrap:wrap"><code style="font-weight:700;letter-spacing:.06em">${esc(fmtCode(i.code))}</code><span class="mut">velja do ${new Date(i.exp).toLocaleDateString("sl")}</span><button class="btn g s" data-invcopy="${esc(i.code)}">Kopiraj povezavo</button><a class="btn g s" style="text-decoration:none" href="${esc(inviteMail(i.code))}">✉ E-pošta</a><button class="btn g s" data-invrev="${esc(i.code)}">Prekliči</button></div>`).join("")}</div>`:""}
+ <form data-fm="redeem" class="row" style="margin-top:14px"><input name="c" placeholder="Imate kodo povabila? Vpišite jo tukaj" maxlength="24" aria-label="Koda povabila"><button class="btn">Poveži</button></form></div>`:'<div class="card mut">Povabila delujejo, ko je Linksy povezan s strežnikom.</div>'}
+ <div class="card"><h3>Moji prijatelji (${S.friends.length})</h3>${S.friends.map(id=>`<div class="row" style="margin-bottom:10px"><button data-user="${id}" style="border:0;background:none;padding:0;display:flex;align-items:center;gap:10px;flex:1;text-align:left;font-weight:800">${av(P(id),48)}${esc(P(id).n)}</button><button class="btn g s" data-chat="${id}">Sporočilo</button><button class="btn s" data-call="${id}|1">📹</button><button class="btn g s" data-un="${id}">Odstrani</button></div>`).join("")||'<p class="mut">Še nimate prijateljev. Ustvarite povabilo in ga pošljite osebi, ki jo želite dodati.</p>'}</div>`},
+groups(){return`<div class="card"><h3>Skupine</h3>${S.groups.map(g=>`<div class="row" style="margin-bottom:12px"><span class="av" style="width:52px;height:52px;border-radius:14px;background:var(--hov);font-size:26px">${g.e}</span><div style="flex:1"><b>${esc(g.n)}</b><div class="mut">${g.m.toLocaleString("sl")} članov</div></div><button class="btn ${g.j?"g":""} s" data-grp="${g.id}">${g.j?"Član ✓":"Pridruži se"}</button></div>`).join("")}</div>
+ <form class="card" data-fm="group"><h3>Ustvari skupino</h3><div class="row"><input name="n" placeholder="Ime skupine" required maxlength="50"><button class="btn">Ustvari</button></div></form>`},
+market(){return`<div class="card"><h3>Tržnica</h3><p class="mut" style="margin:0 0 10px">Oglasi so zaenkrat vidni samo vam.</p><div class="grid">${S.items.map(i=>`<div class="itm card" style="margin:0"><div class="im">${i.img?`<img src="${esc(ok(i.img))}" alt="">`:i.e||"📦"}</div><b>${esc(i.p)} €</b><div>${esc(i.t)}</div><div class="mut">${esc(i.c)}</div></div>`).join("")}</div></div>
+ <form class="card" data-fm="item"><h3>Objavi oglas</h3><div style="display:grid;gap:8px"><input name="t" placeholder="Naslov" required maxlength="60"><div class="row"><input name="p" type="number" min="0" placeholder="Cena v €" required><input name="c" placeholder="Kraj" required maxlength="40"></div><input name="f" type="file" accept="image/*"><button class="btn">Objavi</button></div></form>`},
+events(){return`<div class="card"><h3>Dogodki</h3>${S.events.map(e=>`<div class="row" style="margin-bottom:12px"><span class="av" style="width:52px;height:52px;border-radius:14px;background:var(--acc);font-size:22px">📅</span><div style="flex:1"><b>${esc(e.t)}</b><div class="mut">${esc(e.d)} · ${esc(e.c)}</div></div><button class="btn ${e.go?"":"g"} s" data-ev="${e.id}">${e.go?"Grem ✓":"Grem"}</button></div>`).join("")}</div>
+ <form class="card" data-fm="event"><h3>Ustvari dogodek</h3><div style="display:grid;gap:8px"><input name="t" placeholder="Ime dogodka" required maxlength="60"><div class="row"><input name="d" placeholder="Datum in ura" required maxlength="40"><input name="c" placeholder="Kraj" required maxlength="40"></div><button class="btn">Ustvari</button></div></form>`},
+profile(){const id=pv,u=P(id),own=id==="me",ps=S.posts.filter(p=>p.a===id),ph=[...(u.gallery||[]),...ps.filter(p=>p.img).map(p=>p.img)],cv=U(u.cover);
+return`<div class="card"><div class="cover" style="${cv?`background:center/cover url('${esc(cv)}')`:own?"":`background:linear-gradient(120deg,hsl(${u.h} 65% 55%),hsl(${(u.h+60)%360} 70% 45%))`}"></div><div class="pf">${av(u,110)}<div style="flex:1"><h2 style="margin:0">${esc(u.n)}</h2><div class="mut">${own?S.friends.length+" prijateljev · ":""}${ph.length} fotografij</div></div>${own?"":`<div class="row">${S.friends.includes(id)?`<button class="btn g s" data-chat="${id}">💬 Sporočilo</button><button class="btn s" data-call="${id}|1">📹 Video klic</button>`:(S.out||[]).includes(id)?'<span class="pill">Zahteva poslana</span>':S.req.includes(id)?`<button class="btn s" data-acc="${id}">Potrdi prijateljstvo</button>`:`<button class="btn s" data-add="${id}">＋ Dodaj prijatelja</button>`}</div>`}</div>
+<p>${esc(own?S.me.bio:u.bio||"Član omrežja Linksy.")}</p>${own?`<div class="row" style="flex-wrap:wrap"><button class="btn g s" data-pick="fAv">📷 Profilna slika</button><button class="btn g s" data-pick="fCv">🖼️ Naslovna slika</button><button class="btn s" data-pick="fGal">＋ Dodaj fotografije</button><button class="btn g s" data-editp>✏️ Ime in opis</button>${API?'<button class="btn g s" data-logout>⎋ Odjava</button>':""}</div>`:""}</div>
+<div class="card"><h3>Fotografije</h3>${ph.length?`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px">${ph.map(r=>`<button class="ph" data-view="${esc(r)}" aria-label="Odpri fotografijo"><img src="${esc(U(r))}" alt="Fotografija" loading="lazy"></button>`).join("")}</div>`:'<p class="mut">Ni fotografij.</p>'}${own?'<p class="mut" id="stg"></p>':""}</div>
+<h3 style="margin:0 4px 10px">Objave</h3>${ps.length?ps.slice().sort((a,b)=>b.t-a.t).map(postH).join(""):'<div class="card mut">Še ni objav.</div>'}`}};
+function est(){if(tab!=="profile"||!navigator.storage||!navigator.storage.estimate)return;navigator.storage.estimate().then(e=>{const el=$("#stg");if(el)el.textContent="Zasedeno "+(e.usage/1048576).toFixed(1)+" MB od približno "+(e.quota/1073741824).toFixed(1)+" GB, ki jih brskalnik dovoli za to stran."}).catch(()=>{})}
+function render(){chrome();$("#main").innerHTML=V[tab]();scrollTo(0,0);est();if(tab==="friends"&&API)loadInvs()}
+function refresh(){const y=scrollY;chrome();$("#main").innerHTML=V[tab]();scrollTo(0,y);save();est()}
+
+/* klepet */
+let open=[];function dock(){const kv={};let fo=null;$$("#dock input").forEach(i=>{const w=i.closest("[data-w]").dataset.w;kv[w]=i.value;if(i===document.activeElement)fo=w});$("#dock").innerHTML=open.slice(-2).map(id=>{const p=P(id),L=API?(CH[id]||[]):(S.chat[id]||[]);return`<section class="cw" data-w="${id}"><header>${av(p,32)}<b>${esc(p.n)}</b><button data-call="${id}|0" aria-label="Glasovni klic">📞</button><button data-call="${id}|1" aria-label="Video klic">📹</button><button data-cx="${id}" aria-label="Zapri">✕</button></header>
+${API?"":`<div class="mut" style="padding:6px 12px;font-size:12px;border-bottom:1px solid var(--line)">Sporočila še niso povezana s strežnikom, zato jih prijatelj ne prejme.</div>`}
+<div class="ms">${CHM[id]?`<button class="btn g s" data-older="${id}">Starejša sporočila</button>`:""}${L.map(x=>`<div class="bb ${x.f?"me":""}" title="${x.ts?new Date(x.ts).toLocaleString("sl"):""}">${esc(x.t)}${x.f&&x.id?`<button class="dm" data-delm="${id}|${x.id}" aria-label="Izbriši sporočilo" title="Izbriši sporočilo">🗑</button>`:""}</div>`).join("")||'<span class="mut">Začnite pogovor.</span>'}</div>
+<form data-cs="${id}"><input placeholder="Aa" aria-label="Sporočilo" maxlength="500" autocomplete="off"><button class="btn s">➤</button></form></section>`}).join("");$$(".ms").forEach(e=>e.scrollTop=e.scrollHeight);$$("#dock input").forEach(i=>{const w=i.closest("[data-w]").dataset.w;if(kv[w])i.value=kv[w];if(w===fo)i.focus()})}
+function chat(id){if(!open.includes(id))open.push(id);dock();if(API)loadHist(id);const i=$(`[data-w="${id}"] input`);i&&i.focus()}
+
+/* klici (WebRTC med zavihki, signaliziranje prek BroadcastChannel) */
+const TAB=Math.random().toString(36).slice(2),bc="BroadcastChannel"in window?new BroadcastChannel("linksy-call"):null;
+let pc=null,ls=null,inc=null,pend=[],withId=null;
+let ws=null,peer=null,ICE=[{urls:"stun:stun.l.google.com:19302"}];
+const sig=o=>{if(API){if(ws&&ws.readyState===1&&peer)ws.send(JSON.stringify({t:"sig",to:peer,d:o}));else toast("Povezava za klice ni vzpostavljena.")}else bc&&bc.postMessage({...o,from:TAB})};
+const gather=()=>new Promise(r=>{if(pc.iceGatheringState==="complete")return r();const t=setTimeout(r,5000);pc.addEventListener("icegatheringstatechange",()=>{if(pc.iceGatheringState==="complete"){clearTimeout(t);r()}})});
+async function getIce(){if(!API)return;try{const r=await api("ice");if(r.iceServers&&r.iceServers.length)ICE=r.iceServers}catch(e){}}
+async function media(v){if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){toast("Ta brskalnik ne omogoča dostopa do kamere in mikrofona.");return null}
+ try{return await navigator.mediaDevices.getUserMedia({audio:true,video:v?{width:{ideal:1280},height:{ideal:720}}:false})}catch(e){toast("Ni dostopa do "+(v?"kamere ali mikrofona":"mikrofona")+". Dovolite ga v brskalniku.");return null}}
+function mkpc(){pc=new RTCPeerConnection({iceServers:ICE});pc.onicecandidate=e=>{if(!API&&e.candidate)sig({t:"ice",c:e.candidate})};
+ pc.ontrack=e=>{$("#rv").srcObject=e.streams[0];$("#rw").hidden=true};pc.onconnectionstatechange=()=>{if(["failed","closed"].includes(pc&&pc.connectionState))$("#rs").textContent="Povezava prekinjena"};
+ ls.getTracks().forEach(t=>pc.addTrack(t,ls))}
+function showCall(id,v){const p=P(id);withId=id;$("#ra").innerHTML=av(p,96);$("#rn").textContent=p.n;$("#rs").textContent="Zvonim …";$("#rw").hidden=false;$("#rv").srcObject=null;
+ $("#lv").srcObject=ls;$("#lv").style.display=v?"":"none";$("#bm").className="";$("#bc").className="";$("#bc").style.display=v?"":"none";if(!$("#callD").open)$("#callD").showModal()}
+async function startCall(id,v){if(pc)return toast("Klic že poteka.");if(API&&!(ws&&ws.readyState===1))return toast("Povezava za klice še ni vzpostavljena. Poskusite čez nekaj sekund.");ls=await media(v);if(!ls)return;peer=id;await getIce();showCall(id,v);mkpc();
+ const o=await pc.createOffer();await pc.setLocalDescription(o);if(API)await gather();sig({t:"offer",sdp:pc.localDescription,v,n:S.me.n});
+ if(API)toast("Kličem …");else if(!bc)toast("Ta brskalnik ne podpira klicev med zavihki.");else toast("Klic je viden v drugem zavihku ali oknu Linksyja. Za klice med različnimi napravami je potreben strežnik.")}
+async function flush(){for(const c of pend){try{await pc.addIceCandidate(c)}catch(e){}}pend=[]}
+function endCall(remote){if(!remote)sig({t:"end"});if(pc){pc.close();pc=null}if(ls){ls.getTracks().forEach(t=>t.stop());ls=null}pend=[];$("#callD").open&&$("#callD").close();$("#inc").hidden=true;inc=null}
+async function onSig(d){
+ if(d.t==="offer"&&!pc){inc=d;$("#incn").textContent=d.n+" vas kliče ("+(d.v?"video":"glas")+")";$("#inc").hidden=false}
+ else if(d.t==="answer"&&pc&&!pc.currentRemoteDescription){await pc.setRemoteDescription(d.sdp);await flush();$("#rs").textContent="Povezano"}
+ else if(d.t==="ice"){if(pc&&pc.remoteDescription)try{await pc.addIceCandidate(d.c)}catch(e){}else pend.push(d.c)}
+ else if(d.t==="end")endCall(true)}
+if(bc&&!API)bc.onmessage=ev=>{if(ev.data.from!==TAB)onSig(ev.data)};
+let wsOpened=false;
+function wsConnect(){if(!API||!S.uid||!S.key)return;try{if(ws){const o=ws;ws=null;o.close()}}catch(e){}wsOpened=false;const u=new URL(API);u.protocol=u.protocol==="https:"?"wss:":"ws:";u.pathname="/ws";u.search="";
+ let w;try{w=new WebSocket(u.toString(),["linksy",S.uid+"."+S.key])}catch(e){return}ws=w;
+ w.onopen=()=>{wsOpened=true};w.onmessage=ev=>{try{const m=JSON.parse(ev.data);if(m.ev)handleEv(m);else onSig({...m.d,from:m.from})}catch(e){}};
+ w.onclose=()=>{if(ws===w){ws=null;setTimeout(wsConnect,wsOpened?3000:30000)}}}
+setInterval(()=>{if(ws&&ws.readyState===1)ws.send("ping")},30000);
+$("#ia").onclick=async()=>{if(!inc)return;const d=inc;peer=d.from;ls=await media(d.v);await getIce();if(!ls){endCall();return}
+ $("#inc").hidden=true;showCall((API&&P(d.from).n!=="Neznan")?d.from:(S.people[0]||{id:"x"}).id,d.v);$("#rn").textContent=d.n;mkpc();await pc.setRemoteDescription(d.sdp);await flush();const a=await pc.createAnswer();await pc.setLocalDescription(a);if(API)await gather();sig({t:"answer",sdp:pc.localDescription});$("#rs").textContent="Povezano"};
+$("#id").onclick=()=>{if(inc)peer=inc.from;$("#inc").hidden=true;inc=null;sig({t:"end"})};
+$("#be").onclick=()=>endCall();$("#callD").addEventListener("cancel",e=>{e.preventDefault();endCall()});
+$("#bm").onclick=e=>{if(!ls)return;const t=ls.getAudioTracks()[0];if(t){t.enabled=!t.enabled;e.currentTarget.className=t.enabled?"":"off";e.currentTarget.textContent=t.enabled?"🎤":"🔇"}};
+$("#bc").onclick=e=>{if(!ls)return;const t=ls.getVideoTracks()[0];if(t){t.enabled=!t.enabled;e.currentTarget.className=t.enabled?"":"off";e.currentTarget.textContent=t.enabled?"📹":"🚫"}};
+
+/* dogodki */
+let cimg="";
+document.addEventListener("click",async e=>{const t=e.target.closest("button,[data-x]");if(!t)return;const d=t.dataset;
+ if(d.x!==undefined)return t.closest("dialog").close();
+ if(d.user){pv=d.user;tab="profile";return render()}
+ if(d.tab){tab=d.tab;if(d.tab==="profile")pv="me";return render()}
+ if(d.rx){const[id,k]=d.rx.split("|"),p=S.posts.find(x=>x.id==id);if(p.r.me===k)delete p.r.me;else p.r.me=k;if(API)A("react",{id:p.id,k:p.r.me||""});return refresh()}
+ if(d.cmf)return $(`[data-cf="${d.cmf}"] input`).focus();
+ if(d.sh){const p=S.posts.find(x=>x.id==d.sh);p.sh++;S.posts.push({id:Date.now(),a:"me",t:Date.now(),x:"Delim objavo osebe "+P(p.a).n+": "+p.x,r:{},cm:[],sh:0});toast("Objava deljena na vašem profilu.");return refresh()}
+ if(d.compose!==undefined){$("#cme").innerHTML=av(S.me,40)+"<b>"+esc(S.me.n)+"</b>";$("#ct").value="";cimg="";$("#cp").style.display="none";return $("#dC").showModal()}
+ if(d.acc){if(API){A("friend.acc",{from:d.acc});return}S.req=S.req.filter(x=>x!==d.acc);S.friends.push(d.acc);toast("Sedaj ste prijatelja z osebo "+P(d.acc).n);return refresh()}
+ if(d.del){if(API){A("friend.dec",{from:d.del});return}S.req=S.req.filter(x=>x!==d.del);return refresh()}
+ if(d.add){if(API){A("friend.req",{to:d.add});toast("Zahteva za prijateljstvo poslana osebi "+P(d.add).n);return}S.sug=S.sug.filter(x=>x!==d.add);toast("Zahteva poslana osebi "+P(d.add).n);return refresh()}
+ if(d.un){if(confirm("Odstranim osebo "+P(d.un).n+" iz prijateljev?")){if(API)A("friend.rm",{id:d.un});else{S.friends=S.friends.filter(x=>x!==d.un);refresh()}}return}
+ if(d.grp){const g=S.groups.find(x=>x.id==d.grp);g.j=g.j?0:1;g.m+=g.j?1:-1;return refresh()}
+ if(d.ev){const v=S.events.find(x=>x.id==d.ev);v.go=v.go?0:1;return refresh()}
+ if(d.ask){const i=S.items.find(x=>x.id==d.ask);const f=S.friends[0];(S.chat[f]=S.chat[f]||[]).push({f:1,t:"Živijo, zanima me oglas: "+i.t});save();return chat(f)}
+ if(d.older){const L=CH[d.older]||[];if(L.length)loadHist(d.older,L[0].id);return}
+ if(d.delm){const[w,id]=d.delm.split("|");if(API){CH[w]=(CH[w]||[]).filter(x=>x.id!==+id);dock();api("msg.del",{with:w,id:+id}).catch(x=>{toast("Brisanje ni uspelo: "+x.message);loadHist(w)})}else{S.chat[w]=(S.chat[w]||[]).filter(x=>String(x.id)!==id);save();dock()}return}
+ if(d.chat)return chat(d.chat);
+ if(d.cx){open=open.filter(x=>x!==d.cx);return dock()}
+ if(d.call){const[id,v]=d.call.split("|");return startCall(id,v==="1")}
+ if(d.story!==undefined){const s=S.stories[d.story];$("#sv").innerHTML=`<div class="row">${av(P(s.u),44)}<b>${esc(P(s.u).n)}</b></div><div style="margin-top:12px;aspect-ratio:9/12;border-radius:16px;display:grid;place-items:center;text-align:center;padding:20px;font:800 28px/1.2 inherit;color:#fff;background:linear-gradient(160deg,hsl(${P(s.u).h} 60% 45%),hsl(${(P(s.u).h+70)%360} 60% 30%))">${esc(s.x)}</div>`;return $("#dS").showModal()}
+ if(d.newstory!==undefined){const x=prompt("Besedilo zgodbe:");if(x&&x.trim()){S.stories.unshift({u:"me",x:x.trim().slice(0,60)});refresh()}return}
+ if(d.editp!==undefined){const n=prompt("Ime:",S.me.n);if(n&&n.trim())S.me.name=0,S.me.n=n.trim().slice(0,40);const b=prompt("O meni:",S.me.bio);if(b!==null)S.me.bio=b.slice(0,200);if(API)pushProfile();return refresh()}
+ if(d.inv!==undefined){try{const r=await api("invite.create");try{await navigator.clipboard.writeText(inviteLink(r.code));toast("Povabilo ustvarjeno, povezava je kopirana.")}catch(x){toast("Povabilo ustvarjeno.")}loadInvs()}catch(x){toast(x.message)}return}
+ if(d.invcopy){try{await navigator.clipboard.writeText(inviteLink(d.invcopy));toast("Povezava kopirana.")}catch(x){toast("Kopiranje ni uspelo.")}return}
+ if(d.invrev){try{await api("invite.revoke",{code:d.invrev});loadInvs()}catch(x){toast(x.message)}return}
+ if(d.logout!==undefined){if(confirm("Se želite odjaviti?")){try{localStorage.removeItem("linksy")}catch(x){}location.reload()}return}
+ if(d.pick)return $("#"+d.pick).click();
+ if(d.view){curView=d.view;$("#iv").src=U(d.view);setZoom(0);$("#idel").style.display=(pv==="me"&&(S.me.gallery||[]).includes(d.view))?"":"none";$("#dI").showModal();return}
+ if(t.id==="idel"){if(!curView||!confirm("Izbrišem to fotografijo?"))return;S.me.gallery=(S.me.gallery||[]).filter(r=>r!==curView);await dropImg(curView);curView=null;$("#dI").close();if(API)pushProfile();return refresh()}
+ if(d.delp){if(!confirm("Izbrišem objavo?"))return;const p=S.posts.find(x=>x.id==d.delp);S.posts=S.posts.filter(x=>x.id!=d.delp);if(API)A("delpost",{id:d.delp});if(p&&p.img)await dropImg(p.img);return refresh()}
+ if(t.id==="th"){const r=document.documentElement,dk=getComputedStyle(r).colorScheme==="dark";r.dataset.theme=dk?"light":"dark";try{localStorage.setItem("linksy-theme",r.dataset.theme)}catch(x){}return}
+ if(t.id==="nb"){$("#nl").innerHTML=S.notifs.map(n=>`<div class="row" style="padding:8px 0;border-bottom:1px solid var(--line)"><div style="flex:1">${esc(n.x)}<div class="mut">${ago(n.t)}</div></div></div>`).join("")||'<p class="mut">Ni obvestil.</p>';S.notifs.forEach(n=>n.r=1);save();chrome();return $("#dN").showModal()}
+ if(t.id==="meb"){tab="profile";pv="me";return render()}
+ if(t.id==="cpost"){const x=$("#ct").value.trim();if(!x&&!cimg)return toast("Napišite nekaj ali dodajte sliko.");const im=cimg;cimg="";if(API){$("#dC").close();publish(x,im);return}S.posts.push({id:Date.now(),a:"me",t:Date.now(),x,img:im,r:{},cm:[],sh:0});$("#dC").close();tab="home";render();save()}
+});
+document.addEventListener("submit",async e=>{e.preventDefault();const f=e.target,d=f.dataset;
+ if(d.cf){const i=$("input",f),x=i.value.trim();if(!x)return;S.posts.find(p=>p.id==d.cf).cm.push({u:"me",x,t:Date.now()});if(API)A("comment",{id:d.cf,x});return refresh()}
+ if(d.cs){const i=$("input",f),x=i.value.trim();if(!x)return;const id=d.cs;i.value="";if(API){api("msg.send",{to:id,x}).then(r=>{if(addMsg(id,r.m))dock()}).catch(e=>{toast("Sporočilo ni poslano: "+e.message);i.value=x});return}(S.chat[id]=S.chat[id]||[]).push({f:1,t:x,id:Date.now(),ts:Date.now()});save();dock();$(`[data-w="${id}"] input`).focus();
+  return}
+ if(d.fm){const g=new FormData(f),v=k=>String(g.get(k)||"").trim();if(d.fm==="redeem"){redeem(v("c"));f.reset();return}
+  if(d.fm==="group")S.groups.unshift({id:Date.now(),n:v("n"),m:1,j:1,e:"🌟"});
+  if(d.fm==="event")S.events.unshift({id:Date.now(),t:v("t"),d:v("d"),c:v("c"),go:1});
+  if(d.fm==="item"){let img="";const fl=g.get("f");if(fl&&fl.size){try{img=await saveImg(fl,1000)}catch(x){return toast(x.message)}}S.items.unshift({id:Date.now(),t:v("t"),p:Math.max(0,+v("p")||0),c:v("c"),img,e:"📦"})}
+  toast("Objavljeno!");refresh()}});
+$("#cf").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{cimg=await saveImg(f,2400);$("#cp").src=U(cimg);$("#cp").style.display="block"}catch(x){toast(x.message)}};
+$("#q").addEventListener("keydown",e=>{if(e.key!=="Enter")return;const q=e.target.value.trim().toLowerCase();if(!q)return;
+ const R=[...S.people.filter(p=>p.n.toLowerCase().includes(q)).map(p=>["👤",p.n,"friends",p.id]),...S.groups.filter(g=>g.n.toLowerCase().includes(q)).map(g=>["🫂",g.n,"groups"]),...S.events.filter(g=>g.t.toLowerCase().includes(q)).map(g=>["📅",g.t,"events"]),...S.items.filter(g=>g.t.toLowerCase().includes(q)).map(g=>["🛍️",g.t,"market"]),...S.posts.filter(p=>p.x.toLowerCase().includes(q)).map(p=>["📝",p.x.slice(0,60),"home"])];
+ $("#ql").innerHTML=R.length?R.map(r=>`<button class="lnk" ${r[3]?`data-user="${r[3]}"`:`data-tab="${r[2]}"`} onclick="document.getElementById('dQ').close()"><span>${r[0]}</span>${esc(r[1])}</button>`).join(""):'<p class="mut">Ni zadetkov.</p>';$("#dQ").showModal()});
+$$("dialog").forEach(d=>d.addEventListener("click",e=>{if(e.target===d&&d.id!=="callD"&&d.id!=="dA")d.close()}));
+try{const th=localStorage.getItem("linksy-theme");if(th)document.documentElement.dataset.theme=th}catch(e){}
+let DB=null,curView=null;
+function idb(){return DB||(DB=new Promise((res,rej)=>{if(!window.indexedDB)return rej(new Error("IndexedDB ni na voljo"));const r=indexedDB.open("linksy-img",1);r.onupgradeneeded=()=>r.result.createObjectStore("i");r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}))}
+const tx=(m,fn)=>idb().then(d=>new Promise((res,rej)=>{const t=d.transaction("i",m),q=fn(t.objectStore("i"));t.oncomplete=()=>res(q&&q.result);t.onerror=()=>rej(t.error);t.onabort=()=>rej(t.error||new Error("Shranjevanje ni uspelo"))}));
+function prep(f,max){return new Promise((res,rej)=>{if(!f.type.startsWith("image/"))return rej(new Error("To ni slika"));const u=URL.createObjectURL(f),i=new Image();i.onerror=()=>{URL.revokeObjectURL(u);rej(new Error("Slike ni mogoče prebrati"))};i.onload=()=>{const k=Math.min(1,max/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);c.getContext("2d").drawImage(i,0,0,c.width,c.height);URL.revokeObjectURL(u);(async()=>{for(const q of [.92,.82,.72,.6]){const b=await new Promise(r=>c.toBlob(r,"image/jpeg",q));if(b&&(b.size<=4500000||q===.6))return res(b)}rej(new Error("Pretvorba slike ni uspela"))})()};i.src=u})}
+async function saveImg(f,max=1600){const b=await prep(f,max),id="idb:"+Date.now().toString(36)+Math.random().toString(36).slice(2,7);try{await tx("readwrite",s=>s.put(b,id))}catch(e){throw new Error("Brskalnik ne dovoli shranjevanja slik (zasebni način ali poln prostor).")}IMG[id]=URL.createObjectURL(b);return id}
+async function dropImg(id){if(!id||!id.startsWith("idb:"))return;try{await tx("readwrite",s=>s.delete(id))}catch(e){}if(IMG[id]){URL.revokeObjectURL(IMG[id]);delete IMG[id]}}
+async function loadImgs(){try{await tx("readonly",s=>{const q=s.openCursor();q.onsuccess=()=>{const c=q.result;if(c){IMG[c.key]=URL.createObjectURL(c.value);c.continue()}};return q})}catch(e){}}
+$("#fAv").onchange=async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;try{const r=await saveImg(f,500);await dropImg(S.me.img);S.me.img=r;refresh();if(API)pushProfile()}catch(x){toast(x.message)}};
+$("#fCv").onchange=async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;try{const r=await saveImg(f,1800);await dropImg(S.me.cover);S.me.cover=r;refresh();if(API)pushProfile()}catch(x){toast(x.message)}};
+$("#fGal").onchange=async e=>{const fs=[...e.target.files];e.target.value="";if(!fs.length)return;S.me.gallery=S.me.gallery||[];let n=0;for(const f of fs){try{S.me.gallery.unshift(await saveImg(f,2400));n++;toast("Nalagam "+n+" od "+fs.length+" …")}catch(x){toast(x.message);break}}refresh();toast("Dodanih fotografij: "+n);if(API&&n)pushProfile()};
+$("#dC").addEventListener("close",()=>{if(cimg){dropImg(cimg);cimg=""}});
+const rid=n=>Array.from(crypto.getRandomValues(new Uint8Array(n)),b=>"abcdefghijklmnopqrstuvwxyz0123456789"[b%36]).join("");
+async function api(t,o={}){const r=await fetch(API,{method:"POST",headers:{"Content-Type":"application/json","X-Uid":S.uid,"X-Key":S.key},body:JSON.stringify({t,...o})});const j=await r.json().catch(()=>({}));if(r.status===403){S.uid="";S.key="";S.un="";save();location.reload()}if(!r.ok)throw new Error(j.e||("Strežnik "+r.status));return j}
+const A=(t,o)=>api(t,o).then(r=>{if(r&&r.fr)S.fr=r.fr;if(/^friend\./.test(t))setTimeout(wsConnect,400);return sync()}).catch(x=>toast("Napaka: "+x.message));
+async function loadFr(){try{const r=await api("me");S.fr=r.fr}catch(e){}}
+function merge(G){const us=G.users||{},id=u=>u===S.uid?"me":u,me=us[S.uid];
+ S.people=Object.values(us).filter(u=>u.id!==S.uid).map(u=>({id:u.id,n:u.n||"Član",bio:u.bio||"",img:u.img||"",cover:u.cover||"",gallery:u.gallery||[],h:u.h||200}));
+ const fr=S.fr||{f:[],in:[],out:[]},ex=new Set([...fr.f,...fr.in,...fr.out]),ids=new Set(S.people.map(p=>p.id));
+ fr.f.forEach(id=>{if(!ids.has(id))S.people.push({id,n:"Član",bio:"",img:"",cover:"",gallery:[],h:200})});S.friends=fr.f.slice();S.req=[];S.out=[];S.sug=[];S.stories=[];
+ if(me){if(me.n)S.me.n=me.n;if(me.bio)S.me.bio=me.bio;if(me.img)S.me.img=me.img;if(me.cover)S.me.cover=me.cover;if(me.gallery)S.me.gallery=me.gallery}
+ S.posts=(G.posts||[]).map(p=>({id:p.id,a:id(p.a),t:p.t,x:p.x,img:p.img||"",r:Object.fromEntries(Object.entries(p.r||{}).map(([u,k])=>[id(u),k])),cm:(p.cm||[]).map(c=>({u:id(c.u),x:c.x,t:c.t})),sh:0}))}
+async function sync(){if(!API)return;try{merge(await api("sync"));save();
+ const ae=document.activeElement;if(!document.querySelector("dialog[open]")&&!(ae&&/INPUT|TEXTAREA/.test(ae.tagName))){chrome();$("#main").innerHTML=V[tab]();est()}}catch(e){}}
+const UPL={};
+async function up(ref){if(!ref||ref.startsWith("https://"))return ref||"";if(UPL[ref])return UPL[ref];const bl=await(await fetch(IMG[ref]||ref)).blob();
+ const d=await new Promise((res,rej)=>{const f=new FileReader();f.onerror=()=>rej(new Error("Slike ni mogoče prebrati"));f.onload=()=>res(f.result.split(",")[1]);f.readAsDataURL(bl)});
+ const j=await api("image",{data:d});UPL[ref]=j.url;return j.url}
+let pp=Promise.resolve();
+function pushProfile(){pp=pp.then(async()=>{try{toast("Shranjujem na strežnik …");const g=[];for(const r of S.me.gallery||[])g.push(await up(r));
+ await api("profile",{n:S.me.n,bio:S.me.bio,img:await up(S.me.img),cover:await up(S.me.cover),gallery:g});await sync();toast("Shranjeno za vse obiskovalce")}catch(e){toast("Napaka pri shranjevanju: "+e.message)}})}
+async function publish(x,im){try{toast("Objavljam …");const u=im?await up(im):"";await api("post",{x,img:u});if(im)dropImg(im);await sync();toast("Objavljeno za vse")}catch(e){toast("Napaka: "+e.message)}}
+async function initShared(){if(!API)return;if(!S.uid||!S.key||!S.un)await showAuth();save();await loadFr();await sync();wsConnect();loadUnread();if(!S.reg){S.reg=1;save();pushProfile()}}
+const CH={},CHM={},UN={};
+const mapM=m=>({id:m.id,f:m.f===S.uid?1:0,t:m.x,ts:m.t});
+function addMsg(w,m){const L=CH[w]=CH[w]||[];if(L.some(x=>x.id===m.id))return false;L.push(mapM(m));L.sort((a,b)=>a.id-b.id);return true}
+function markSeen(w){const L=CH[w]||[];if(L.length){S.seen=S.seen||{};S.seen[w]=Math.max(S.seen[w]||0,L[L.length-1].id);save()}UN[w]=0;chrome()}
+async function loadHist(w,before){try{const r=await api("msg.hist",{with:w,before:before||0}),L=CH[w]=CH[w]||[];r.m.forEach(m=>{if(!L.some(x=>x.id===m.id))L.push(mapM(m))});L.sort((a,b)=>a.id-b.id);CHM[w]=r.m.length>=300;markSeen(w);dock()}catch(e){toast("Pogovora ni mogoče naložiti: "+e.message)}}
+function handleEv(m){
+ if(m.ev==="msg"){const w=m.with,mine=m.m.f===S.uid;if(!addMsg(w,m.m))return;if(open.includes(w)){markSeen(w);dock()}else if(!mine){UN[w]=(UN[w]||0)+1;chrome();toast("Novo sporočilo: "+P(w).n)}}
+ else if(m.ev==="del"){const L=CH[m.with];if(L){const had=L.some(x=>x.id===m.id);CH[m.with]=L.filter(x=>x.id!==m.id);if(had&&!open.includes(m.with)&&UN[m.with]>0){UN[m.with]--;chrome()}if(open.includes(m.with))dock()}}}
+async function loadUnread(){if(!API)return;try{const r=await api("msg.unread",{seen:S.seen||{}});Object.keys(UN).forEach(k=>delete UN[k]);Object.assign(UN,r.u);chrome()}catch(e){}}
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)loadUnread()});
+const fmtCode=c=>c.replace(/(.{4})(?=.)/g,"$1-");
+const inviteLink=c=>location.href.split("#")[0]+"#vabilo="+c;
+const inviteMail=c=>"mailto:?subject="+encodeURIComponent("Povabilo na Linksy")+"&body="+encodeURIComponent("Živjo!\n\nPovabljam te na Linksy, zasebno družbeno omrežje, kjer vidiš samo ljudi, s katerimi se povežeš.\n\nOdpri povezavo in ustvari račun ali se prijavi:\n"+inviteLink(c)+"\n\nKo se prijaviš, se samodejno poveževa. Povezava velja 7 dni in jo lahko uporabi samo ena oseba.");
+async function loadInvs(){try{const r=await api("invite.list");S.invs=r.i;if(tab==="friends"){const y=scrollY;$("#main").innerHTML=V.friends();scrollTo(0,y)}}catch(e){}}
+async function redeem(c){c=String(c||"").toUpperCase().replace(/[^A-Z0-9]/g,"");if(!c)return;try{const r=await api("invite.redeem",{code:c});S.fr=r.fr;await sync();toast("Povezani ste. Prijatelj je dodan.");render();setTimeout(wsConnect,300)}catch(e){toast(e.message)}}
+async function hashInvite(){const m=location.hash.match(/vabilo=([A-Za-z0-9-]+)/);if(!m||!API)return;history.replaceState(null,"",location.pathname+location.search);await redeem(m[1])}
+let amode="login";
+function setAm(m){amode=m;$("#ah").textContent=m==="login"?"Prijava v Linksy":"Ustvari račun";$("#apl").hidden=m==="login";$("#ago").textContent=m==="login"?"Prijava":"Ustvari račun";$("#aer").textContent="";$("#atl").className="btn s"+(m==="login"?"":" g");$("#atr").className="btn s"+(m==="reg"?"":" g");$("#apw").autocomplete=m==="login"?"current-password":"new-password"}
+$("#atl").onclick=()=>setAm("login");$("#atr").onclick=()=>setAm("reg");
+function showAuth(){return new Promise(res=>{const d=$("#dA");setAm("login");d.addEventListener("cancel",e=>e.preventDefault());d.showModal();
+ const go=async()=>{const un=$("#aun").value.trim(),pw=$("#apw").value,er=$("#aer");er.textContent="";
+  if(!/^[A-Za-z0-9_.-]{3,20}$/.test(un))return er.textContent="Uporabniško ime: 3 do 20 znakov (črke, številke, _ . -).";
+  if(pw.length<6)return er.textContent="Geslo mora imeti vsaj 6 znakov.";
+  if(amode==="reg"&&pw!==$("#apw2").value)return er.textContent="Gesli se ne ujemata.";
+  $("#ago").disabled=true;
+  try{const r=await fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({t:amode==="reg"?"register":"login",un,pw})});const j=await r.json().catch(()=>({}));
+   if(!r.ok)throw new Error(j.e||("Strežnik "+r.status));
+   S.uid=j.uid;S.key=j.key;S.un=j.un;S.reg=amode==="login"?1:0;S.fr=null;S.me={id:"me",n:j.un,bio:"",img:"",cover:"",gallery:[]};save();d.close();res()}
+  catch(x){er.textContent=x.message==="Failed to fetch"?"Strežnika ni mogoče doseči. Preverite naslov Workerja.":x.message}finally{$("#ago").disabled=false}};
+ $("#ago").onclick=go;["#aun","#apw","#apw2"].forEach(q=>$(q).addEventListener("keydown",e=>{if(e.key==="Enter")go()}))})}
+function setZoom(z){const i=$("#iv");i.dataset.z=z;i.style.maxWidth=z?"none":"100%";i.style.maxHeight=z?"none":"calc(100dvh - 160px)";i.style.cursor=z?"zoom-out":"zoom-in"}
+$("#iv").onclick=()=>setZoom($("#iv").dataset.z==="1"?0:1);
+$("#iv").onload=()=>{$("#ivc").textContent=$("#iv").naturalWidth+" × "+$("#iv").naturalHeight+" px · kliknite sliko za prikaz v pravi velikosti"};
+(async()=>{await loadImgs();await initShared();render();await hashInvite();if(API){setInterval(sync,20000);setInterval(()=>loadFr().then(sync),120000)}try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}})();
+</script>
+</body>
+</html>
